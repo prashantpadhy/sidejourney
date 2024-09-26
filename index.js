@@ -4,6 +4,19 @@ const main = document.getElementById("main");
 const form = document.getElementById("form");
 const search = document.getElementById("search");
 
+const xssTags = {
+    "\"": "&quot;",
+    "'": "&#x27;",
+    "/": "&#x2F;",
+    "<": "&lt;",
+    ">": "&gt;"
+};
+function xssEscape(str) {
+    return str.replace(/["'/<>]/g, function(tag) {
+        return xssTags[tag] || tag;
+    });
+}
+
 async function getUser(username) {
   const resp = await fetch(BASEURL + username);
   const respData = await resp.json();
@@ -21,24 +34,34 @@ async function getRepos(username) {
 }
 
 function createUserCard(user) {
+  if (user.message) return userNotFound();
+  if (!user.name) user.name = user.login; //if user has no name, use their username instead
+  if (!user.bio) user.bio = "";
+  user.name = xssEscape(user.name);
+  user.bio = xssEscape(user.bio);
   const cardHTML = `
         <div class="card">
             <div>
-                <img class="avatar" src="${user.avatar_url}" alt="${user.name}" />
+                  <a href="${user.avatar_url}" download>
+                      <img class="avatar" src="${user.avatar_url}" alt="${user.name}"/>
+                  </a>
             </div>
             <div class="user-info">
                 <h2>${user.name}</h2>
                 <p>${user.bio}</p>
                 <ul class="info">
+                    <li>${user.public_repos}<strong>Repos</strong></li>
                     <li>${user.followers}<strong>Followers</strong></li>
                     <li>${user.following}<strong>Following</strong></li>
-                    <li>${user.public_repos}<strong>Repos</strong></li>
                 </ul>
+                <br>
                 <div id="repos"></div>
             </div>
         </div>
     `;
 
+  
+  
   main.innerHTML = cardHTML;
 }
 
@@ -51,6 +74,7 @@ function addReposToCard(repos) {
     .forEach((repo) => {
       const repoEl = document.createElement("a");
       repoEl.classList.add("repo");
+      repo.name = xssEscape(repo.name);
 
       repoEl.href = repo.html_url;
       repoEl.target = "_blank";
@@ -58,6 +82,33 @@ function addReposToCard(repos) {
 
       reposEl.appendChild(repoEl);
     });
+}
+
+function userNotFound(){
+  
+    const notfoundcardHTML = `
+          <div class="errCard">
+            <div>
+                <img class="avatar" src="errImage.png" 
+                width="230" 
+                height="230" />
+            </div>
+            <div class="errText">
+                <h2>User not found</h2>
+                <p>Write again or try again later</p>
+                <ul class="info">
+                    <li><strong></strong></li>
+                    <li><strong></strong></li>
+                    <li><strong></strong></li>
+                </ul>
+                <br>
+                <div id="repos"></div>
+            </div>
+        </div>
+      `;
+
+
+    main.innerHTML = notfoundcardHTML;
 }
 
 form.addEventListener("submit", (e) => {

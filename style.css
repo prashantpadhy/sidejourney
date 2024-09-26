@@ -1,12 +1,21 @@
+.github {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+}
 
 * {
     box-sizing: border-box;
 }
 
 #logo{
-
-height: 200px;
+   height: 200px;
 }
+::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -15,21 +24,34 @@ body {
     font-family: "Poppins", sans-serif;
     margin: 0;
     min-height: 100vh;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+#form {
+    display: flex;
+    justify-content: center;
 }
 
 input {
-    border-radius: 10px;
+    border-radius: 100px;
     border: none;
-    box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
-        0 15px 40px rgba(0, 0, 0, 0.1);
     font-family: inherit;
     font-size: 1rem;
     padding: 1rem;
     margin-bottom: 2rem;
+    width: 330px;
+}
+
+.searchText{
+    text-align: center;
+    background-color: #FFF;
+    border: 1px solid #000;
+    color: #000;
 }
 
 input::placeholder {
-    color: #bbb;
+    color: #000;
 }
 
 input:focus {
@@ -37,8 +59,10 @@ input:focus {
 }
 
 .card {
-    background-color: #4c2885;
-    background-image: linear-gradient(315deg, #4c2885 0%, #4c11ac 100%);
+    /* background-color: #4c2885; */
+    /* background-color: red; */
+
+    background-image: linear-gradient(to right, #0f0c29);
     border-radius: 20px;
     box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
         0 15px 40px rgba(0, 0, 0, 0.1);
@@ -47,14 +71,39 @@ input:focus {
     max-width: 800px;
 }
 
+.errCard {
+    /* background-color: #4c2885; */
+    /* background-color: red; */
+
+    background-image: linear-gradient(to right, #0f0c29);
+    border-radius: 20px;
+    box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
+        0 15px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    padding: 3rem;
+    max-width: 800px;
+    background-color: #d75353;
+    color: #FFF;
+}
+
+.errText{
+    font-weight: bold;
+    color: #FFF;
+    text-align: left;
+    font-size: large;
+}
+
 .avatar {
-    border-radius: 99px;
+    border-radius: 50%;
     object-fit: contain;
 }
 
 .user-info {
-    color: #eee;
+    color: #000;
     margin-left: 2rem;
+}
+.user-info li strong{
+    color: #000;
 }
 
 .user-info h2 {
@@ -72,6 +121,7 @@ input:focus {
 .user-info ul li {
     display: flex;
     align-items: center;
+    margin: 4px;
 }
 
 .user-info ul li strong {
@@ -80,7 +130,7 @@ input:focus {
 }
 
 .repo {
-    background-color: #2a2a72;
+    background-color: #2c2c2c;
     border-radius: 5px;
     display: inline-block;
     color: white;
@@ -89,4 +139,8 @@ input:focus {
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
     text-decoration: none;
+}
+.repo:hover {
+    color: #FFF;
+    background-color: #000;
 }
